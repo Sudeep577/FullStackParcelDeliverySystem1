@@ -16,7 +16,7 @@ const newUser = User({
      age:req.body.age,
      country:req.body.country,
      address:req.body.address,
-     passwod:CryptoJs.AES.encrypt,(
+     password:CryptoJs.AES.encrypt,(
      req.body.password,
     process.env.PASS
 ).toString()
