@@ -1,23 +1,23 @@
 const mongoose = require("mongoose");
 
-const UserSchema = mogoose.Schema(
+const ParcelSchema = new mongoose.Schema(
   {
-    from: { type: String, require: true },
-    to: { type: String, require: true },
-    weight: { type: Number, require: true },
-    sendername: { type: String, require: true },
-    recipientname: { type: String, require: true },
-    senderemail: { type: String, require: true },
-    recipientemail: { type: String, require: true },
-    cost: { type: Number, require: true },
-    date: { type: Date, require: true },
+    from: { type: String, required: true },
+    to: { type: String, required: true },
+    weight: { type: Number, required: true },
+    sendername: { type: String, required: true },
+    recipientname: { type: String, required: true },
+    senderemail: { type: String, required: true },
+    recipientemail: { type: String, required: true },
+    cost: { type: Number, required: true },
+    date: { type: Date, required: true },
     note: { type: String },
     feedback: { type: String },
     status: { type: Number, default: 0 },
   },
   {
-    timestamp: true,
+    timestamps: true, // Enable createdAt and updatedAt fields
   }
 );
 
-module.exports = mongoose.model("parcel", ParcelSchema);
+module.exports = mongoose.model("Parcel", ParcelSchema);
