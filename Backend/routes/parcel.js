@@ -3,7 +3,7 @@ const router = express.Router();
 const{createParcel, getAllParcels, updateParcel, getOneParcel, getUserParcel, deleteParcel}=require("../controllers/parcel")
 
 //AD THE PARCEL
-router.post("/", createParcel)
+router.post("/",createParcel)
 
 //GET ALL PARCELS
 router.get("/",getAllParcels)

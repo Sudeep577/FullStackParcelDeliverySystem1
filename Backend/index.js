@@ -15,9 +15,10 @@ app.use(express.json());
 
 //ROUTES
 
-app.use("/auth", authRoute);
-app.use("/users",useRoute)
-app.use("/parcel",parcelRoute)
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/users",useRoute);
+app.use("/api/v1/parcels", parcelRoute);
+
 
 //DATABASE CONNECTION 
 const DB = process.env.DB;
