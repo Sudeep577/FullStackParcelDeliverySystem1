@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Menu from "./components/Menu";
 import Footer from "./components/Footer";
 import Users from "./Pages/Users";
+import Login from "./Pages/Login";
 
 function App() {
   const Layout = () => {
@@ -47,6 +48,10 @@ function App() {
           element: <Parcels />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
   ]);
 
