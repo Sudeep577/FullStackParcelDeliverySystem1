@@ -71,7 +71,9 @@ const Parcels = () => {
     <div className="m-[30px] bg-white p-[20px]">
       <div className="flex items-center justify-between">
         <h1 className="m-[20px] text-[20px]">All Parcels</h1>
-        <button className="bg-black text-white p-[10px]">New Parcel</button>
+       <Link to="/newparcel">
+       <button className="bg-black text-white p-[10px]">New Parcel</button>
+       </Link>
       </div>
       <DataGrid
         rows={rows}
