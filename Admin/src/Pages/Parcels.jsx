@@ -1,86 +1,91 @@
-import React from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
 import { FaTrash } from "react-icons/fa";
-
-const rows = [
-  {
-    id: 1,
-    from: "New York",
-    to: "Los Angeles",
-    sendername: "John Doe",
-    recipientname: "Jane Smith",
-    note: "Urgent delivery",
-    cost: 150,
-    _id: "1",
-  },
-  {
-    id: 2,
-    from: "San Francisco",
-    to: "Chicago",
-    sendername: "Alice Johnson",
-    recipientname: "Bob Brown",
-    note: "Handle with care",
-    cost: 200,
-    _id: "2",
-  },
-  {
-    id: 3,
-    from: "Miami",
-    to: "Houston",
-    sendername: "Emily Davis",
-    recipientname: "Michael Green",
-    note: "Gift inside",
-    cost: 100,
-    _id: "3",
-  },
-];
-
-const columns = [
-  { field: "_id", headerName: "ID", width: 90 },
-  { field: "sendername", headerName: "Sender Name", width: 150 },
-  { field: "recipientname", headerName: "Recipient Name", width: 130 },
-  { field: "from", headerName: "From", width: 130 },
-  { field: "to", headerName: "To", width: 150 },
-  { field: "cost", headerName: "Cost ($)", type: "number", width: 150 },
-  {
-    field: "edit",
-    headerName: "Edit",
-    width: 150,
-    renderCell: (params) => (
-      <Link to={`/parcel/${params.row._id}`}>
-        <button
-          className="bg-teal-300 text-white cursor-pointer w-[70px]"
-          aria-label={`Edit parcel with ID ${params.row._id}`}
-        >
-          Edit
-        </button>
-      </Link>
-    ),
-  },
-  {
-    field: "delete",
-    headerName: "Delete",
-    width: 150,
-    renderCell: (params) => <FaTrash />,
-  },
-];
+import { useEffect } from "react";
+import { useState } from "react";
+import {publicRequest} from "../requestMethods";
 
 const Parcels = () => {
+
+  const [parcels, setParcels] = useState([]);
+
+  
+
+  const columns = [
+    { field: "from", headerName: "From", width: 150 },
+    { field: "to", headerName: "To", width: 150 },
+    { field: "sendername", headerName: "Sender", width: 150 },
+    { field: "recipientname", headerName: "Recipient", width: 150 },
+    { field: "note", headerName: "Note", width: 200 },
+    {
+      field: "edit",
+      headerName: "Edit",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={"/parcel/" + params.row._id}>
+              <button className="bg-teal-300  text-white cursor-pointer  w-[70px]">
+                Edit
+              </button>
+            </Link>
+          </>
+        );
+      },
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <FaTrash className="text-red-500 cursor-pointer m-[10px]" onClick={() => handleDelete(params.row._id)}/>
+          </>
+        );
+      },
+    },
+  ];
+
+  useEffect(() => {
+    const getParcels = async () => {
+      try {
+        const res = await publicRequest.get("/parcels");
+        setParcels(res.data);
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    getParcels();
+  }, []);
+
+const handleDelete = async(id) =>{
+  try {
+      await publicRequest.delete(`/parcels/${id}`);
+      window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   return (
-    <div className="m-[30px] bg-white p-[20px]">
+    <div className="m-[30px] bg-[#fff] p-[20px]">
       <div className="flex items-center justify-between">
         <h1 className="m-[20px] text-[20px]">All Parcels</h1>
-       <Link to="/newparcel">
-       <button className="bg-black text-white p-[10px]">New Parcel</button>
-       </Link>
+
+        <Link to="/newparcel">
+          <button className="bg-[#1E1E1E] text-white p-[10px] cursor-pointer">
+            New Parcel
+          </button>
+        </Link>
       </div>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        checkboxSelection
-        autoHeight
-        disableSelectionOnClick
+      <DataGrid 
+      rows={parcels} 
+      columns={columns} 
+      getRowId={(row) => row._id}
+      disableSelectionOnClick
+      pageSize={10}
+      checkboxSelection
       />
     </div>
   );
